@@ -2,8 +2,8 @@
     <nav class="nav navbar ">
         <a class="navbar-brand" href="#">RENTY</a>
         <form class="form-inline">
-
-            <router-link to="/login">Registrarse/Ingresar</router-link>
+            <router-link v-if="!user" to="/login">Registrarse/Ingresar</router-link>
+            <router-link v-if="user" to="/profile">{{user.displayName}}</router-link>
         </form>
     </nav>
 </template>
@@ -11,6 +11,11 @@
 <script>
     export default {
         name: "Header",
+        computed: {
+            user() {
+                return this.$store.getters['user/user']
+            }
+        },
         props: {
             msg: String
         }

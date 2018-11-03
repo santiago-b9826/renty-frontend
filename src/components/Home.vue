@@ -1,6 +1,6 @@
 <template>
     <div>
-        Quiero mucho a mi novio Andres Pino <3
+        Home works!
     </div>
 </template>
 

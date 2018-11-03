@@ -29,7 +29,7 @@ const auth = {
         this.ui = new firebaseui.auth.AuthUI(firebase.auth());
 
         firebase.auth().onAuthStateChanged((user) => {
-            console.log(user);
+            this.context.$store.dispatch('user/setCurrentUser');
             let requireAuth = this.context.$route.matched.some(record => record.meta.requireAuth);
             let guestOnly = this.context.$route.matched.some(record => record.meta.guestOnly);
 
