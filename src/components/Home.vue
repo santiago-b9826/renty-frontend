@@ -1,13 +1,20 @@
-<template>
-    <div>
-        Home works!
-    </div>
+<template >
+
+   <buscar></buscar>
+
 </template>
 
 <script>
-    export default {
-        name: "Home"
-    }
+ 
+import Buscar from './Buscar.vue'
+
+export default {
+  name: "Home",
+  components:{
+    Buscar
+  },
+
+};
 </script>
 
 <style scoped>
