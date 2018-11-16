@@ -43,6 +43,11 @@
     }
 
     a {
-        color: #42b983;
+        color: #ffffff;
+        margin-left: 80px;
     }
+    .form-inline{
+        margin-right: 80px;
+    }
+    
 </style>
