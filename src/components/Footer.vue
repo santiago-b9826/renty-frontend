@@ -1,5 +1,5 @@
 <template>
-    <div class="card-footer text-muted">
+    <div >
         Hecho por:
     </div>
 </template>

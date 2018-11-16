@@ -121,7 +121,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  margin-top: 120px;
+  margin-top: 10px;
   margin-bottom: 80px;
   background-color: #12223d; /* o background-color:#000000; */
   opacity: 0.7;
