@@ -1,4 +1,4 @@
-<template>
+<template > 
     <div id="app" class="app">
         <Header/>
         <img alt="Vue logo" src="./assets/Renty-mid.png">
@@ -21,6 +21,7 @@ export default {
 </script>
 
 <style>
+
 .app {
   text-align: center;
   color: #2c3e50;

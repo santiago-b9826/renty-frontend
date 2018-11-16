@@ -48,5 +48,10 @@
 
     a {
         color: #ffffff;
+        margin-left: 80px;
     }
+    .form-inline{
+        margin-right: 80px;
+    }
+    
 </style>
