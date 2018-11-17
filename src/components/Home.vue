@@ -98,6 +98,7 @@ export default {
   },
   created: function() {
     this.SearchTypes();
+    
   },
   methods: {
     async clickForDetail(carId, rentalId) {
@@ -107,9 +108,7 @@ export default {
           url = `https://renty-web.herokuapp.com/cars/${carId}`;
           break;
         }
-        case 123456789: {
-          console.log('1');
-          
+        case 123456789: {          
           url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
           break;
         }
@@ -117,15 +116,14 @@ export default {
           //url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
         }
       }
-      console.log(url);
       
       const apiAnswer = await Axios({
         method: "get",
         url: url
       });
-      this.specificCar = apiAnswer.data;
-      console.log(apiAnswer);
-      
+      this.specificCar = apiAnswer.data;   
+      console.log(this.specificCar, 'CAR CON ID');
+         
       this.showDetail = true;
     },
     CaptureValues() {
@@ -134,24 +132,30 @@ export default {
       this.isSearch = true;
     },
     SearchTypes() {
+
       Axios.get("https://renty-web.herokuapp.com/cars/").then(response => {
         let cars = response.data;
-
+        
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
+            console.log(cars[i].type, 'python');
+            
           }
         }
       });
+      console.log(this.listCarsT, 'LIST DESPUES DE python')
       Axios.get("https://renty-ruby.herokuapp.com/cars/").then(response => {
         let cars = response.data;
-
+        
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
+            console.log(cars[i].type, 'ruby');
           }
         }
       });
+      console.log(this.listCarsT, 'LIST DESPUES DE ruby')
       /*Axios.get("https://renty-scala.herokuapp.com/cars/").then(response => {
         let cars = response.data;               
         for (let i = 0; i < cars.length; i++) {
@@ -164,17 +168,20 @@ export default {
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
-          this.listCars.push(response.data[0]);
-          console.log(this.listCars, 'python');
+          let cars = response.data;          
+          for (let i = 0; i < cars.length; i++){
+            this.listCars.push(cars[i]);        
+          }
         }
       );
 
       Axios.get(`https://renty-ruby.herokuapp.com/cars/${this.url}`).then(
-        response => {          
-          for(let i = 0; i < response.data.length; i++){
-              this.listCars.push(response.data[i]);
-          }          
-          console.log(this.listCars, 'ruby');
+        response => {
+          let cars = response.data;          
+          for (let i = 0; i < cars.length; i++) {
+            this.listCars.push(cars[i]);
+            }
+          console.log(this.listCars);
           
         }
       );
