@@ -11,28 +11,32 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
-                        <select  id="typecar" class="form-control">
-                        <option class="select"  v-for="listCars in listCars" :key=listCars.id >{{listCars.type}}</option>
+                        <select  id="typecar" class="form-control" v-model="type">
+                        <option class="select" v-for="listCars in listCars" :key=listCars.id >{{listCars.type}}</option>
+                        
                        </select>
                 </div>
                     <div class="form-group col-md-6">
                          <label class="label" for="pickup-point">Pickup point</label>
-                        <select id="pickup-point" class="form-control">
+                        <select id="pickup-point" class="form-control" v-model="pickup">
                         <option selected>Medellin</option>
+                        <option>...</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="label" for="date-start">Fecha inicio</label>                            
-                        <input id='date-start' type="date" class="form-control">                            
+                         <label class="label" for="date-start">Fecha inicio</label>
+                            
+                                <input id='date-start' type="date" class="form-control" v-model="from">
+                            
                     </div>
                     <div class="form-group col-md-6">
                         <label class="label" for="date-finish">Fecha fin</label>                            
-                        <input id='date-finish' type="date" class="form-control">                            
+                        <input id='date-finish' type="date" class="form-control" v-model="to">                            
                     </div>
             </div>
         </form>    
 
-    <button @click="capureValues" class="btn btn-primary"  >Buscar </button>     
+        <button @click="CaptureValues" class="btn btn-primary"  >Buscar </button>    
   </div>
   </div>
 </div>
@@ -57,14 +61,10 @@
 </template>
 
 <script>
-
-import Buscar from "./Buscar.vue";
 import Axios from "axios";
 export default {
   name: "List",
   components: {
-    Buscar,
-    
   },
   beforeCreate() {
     this.SearchRenty()
@@ -75,6 +75,11 @@ export default {
   },
   data() {
     return {
+      type: "",
+      pickup: "",
+      from: "",
+      to: "",
+      url:"",
       listCars: [],
       isSearch: false
     };
@@ -83,8 +88,13 @@ export default {
     this.SearchRenty();
   },
   methods: {
+    CaptureValues() {
+      this.url = `search?from=${this.from}&to=${this.to}&type=${this.type}`;
+      this.SearchRenty();
+      this.isSearch = true;
+    },
     SearchRenty() {
-      Axios.get("https://api.myjson.com/bins/nau0y").then(
+      Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
           this.listCars = response.data;
           console.log(this.listCars);
@@ -95,9 +105,6 @@ export default {
           // console.log(error);
         }
       );
-    },
-    capureValues(){
-      this.isSearch = true
     }
   }
 };
@@ -107,15 +114,14 @@ export default {
 .container {
   width: 1000px;
   height: 400px;
-  text-align: left; 
-  margin-left: 8.5%; 
+  text-align: left;
+  margin-left: 8.5%;
   margin-top: -5px;
   font-family: "Raleway", sans-serif;
   background: #12223d;
   overflow: hidden;
   position: relative;
   color: #fff;
-  
 }
 
 .h1 {
@@ -139,7 +145,7 @@ export default {
   opacity: 1;
 }
 .btn-primary {
-    width: 140px;
+  width: 140px;
   background-color: #2dc4bb;
   color: #fff;
   border-color: #2dc4bb;
@@ -157,7 +163,7 @@ export default {
   margin: 1rem;
   margin-left: 35px;
 }
-.card{
+.card {
   width: 70%;
   height: 350px;
   text-align: left;
@@ -170,75 +176,66 @@ export default {
   overflow: hidden;
   color: #fff;
   border-radius: 10px;
- 
 }
-.btn-buscar{
-    margin-right: 6%;
+.btn-buscar {
+  margin-right: 6%;
 }
-.card-availability{
-    width: 1100px;
-    height: 200px;
-    background-color: #12223d;    
-   margin-left: 6%;
-   margin-bottom: 15px;
-   
-    
+.card-availability {
+  width: 1100px;
+  height: 200px;
+  background-color: #12223d;
+  margin-left: 6%;
+  margin-bottom: 15px;
 }
-.list-group{
-    width: 1400px;
-    height: 210px;
-    border-radius: 10px;
-    background-color: #e8e8e9;
-    margin-top: 15px;
-    margin-left: 8.5%;
-    position: relative;
+.list-group {
+  width: 1400px;
+  height: 210px;
+  border-radius: 10px;
+  background-color: #e8e8e9;
+  margin-top: 15px;
+  margin-left: 8.5%;
+  position: relative;
 }
-.car-title{
-margin-top: 22px;
+.car-title {
+  margin-top: 22px;
   font-family: "Lato", sans-serif;
   font-size: 40px;
   text-align: left;
   margin-left: 15%;
- 
 }
-.card-text{    
-    
-     font-family:'Raleway', sans-serif;;
-     font-size: 16px;
-     text-align: left;
-     margin-left: 17%;
+.card-text {
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  text-align: left;
+  margin-left: 17%;
 }
-.btn-detalle{
-    position: absolute;    
-    margin-left: 900px;
-    margin-bottom: 80%;
-    margin-top: 80px;
-   
+.btn-detalle {
+  position: absolute;
+  margin-left: 900px;
+  margin-bottom: 80%;
+  margin-top: 80px;
 }
-.image{
-    position: absolute;    
-    margin-left: 600px;
-    margin-bottom: 80%;
-    margin-top: 20px;
+.image {
+  position: absolute;
+  margin-left: 600px;
+  margin-bottom: 80%;
+  margin-top: 20px;
 }
 
-.list{
+.list {
   margin-top: 5rem;
   margin-left: -40px;
 }
 
-.label{
-    color: #fff;
-    font-family: "Raleway", sans-serif;
+.label {
+  color: #fff;
+  font-family: "Raleway", sans-serif;
 }
-.form-control{
-    height: 33px;
-    width: 380px;
-    
-   
+.form-control {
+  height: 33px;
+  width: 380px;
 }
-.select{
-    font-family: "Raleway", sans-serif;
-    
+.select {
+  font-family: "Raleway", sans-serif;
 }
 </style>
