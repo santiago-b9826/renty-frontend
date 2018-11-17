@@ -10,49 +10,51 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
-                        <select  id="typecar" class="form-control">
-                        <option class="select" selected>Choose...</option>
-                        <option>...</option>
+                        <select  id="typecar" class="form-control" v-model="type">
+                        <option class="select" v-for="listCars in listCars" :key=listCars.id >{{listCars.type}}</option>
+                        
                        </select>
                 </div>
                     <div class="form-group col-md-6">
                          <label class="label" for="pickup-point">Pickup point</label>
-                        <select id="pickup-point" class="form-control">
-                        <option selected>Choose...</option>
+                        <select id="pickup-point" class="form-control" v-model="pickup">
+                        <option selected>Medellin</option>
                         <option>...</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label class="label" for="date-start">Fecha inicio</label>    
-                        <input id='date-start' type="date" class="form-control">
+                         <label class="label" for="date-start">Fecha inicio</label>
+                            
+                                <input id='date-start' type="date" class="form-control" v-model="from">
                             
                     </div>
                     <div class="form-group col-md-6">
                         <label class="label" for="date-finish">Fecha fin</label>                            
-                        <input id='date-finish' type="date" class="form-control">                            
+                        <input id='date-finish' type="date" class="form-control" v-model="to">                            
                     </div>
             </div>
         </form>    
 
-    <div class="btn-buscar"> <Buscar :SearchRenty="SearchRenty" ></Buscar>  </div>
-         
+        <button @click="CaptureValues" class="btn btn-primary"  >Buscar </button>    
   </div>
   </div>
 </div>
-<div class="list">
-    <div class="list-group" v-for="carFromList in listCars" :key=carFromList.id >  
+<div v-show='this.isSearch' class="list">
+  <div class="list-group" v-for="carFromList in listCars" :key=carFromList.id >  
+       
     <h5 class="car-title">{{carFromList.brand}}</h5>
     <p class="card-text">Tipo: {{carFromList.type}}</p>
     <p class="card-text">Modelo: {{carFromList.model}}</p>
     <p class="card-text">Precio: ${{carFromList.price}}</p> 
     <div class="image">
-      <td><img :src="carFromList.thumbnail" /></td>
-    </div>      
+      <td><img :src="carFromList.thumbnail" width="100vw"/></td>
+    </div>
     <div class="btn-detalle">
-      <button  class="btn btn-primary" @click="clickForDetail(carFromList)">Detalle</button>  
+        <button class="btn btn-primary" @click="clickForDetail(carFromList.id)">Detalle</button>
     </div> 
   </div>
 </div>
+
 <Details :show="showDetail" :car="specificCar"/>
 </div>
 </template>
@@ -69,16 +71,79 @@ export default {
     Form,
     Details
   },
+  beforeCreate() {
+    this.SearchRenty();
+  },
+  props: {},
+  mounted() {
+    //console.log(this.listCars);
+  },
   data() {
     return {
+      type: "",
+      pickup: "",
+      from: "",
+      to: "",
+      url: "",
+      listCars: [],
+      isSearch: false,
       showDetail: false,
-      specificCar: {}
+      specificCar: {
+        id: "1",
+        brand: "Toyota",
+        thumbnail:
+          "https://images-na.ssl-images-amazon.com/images/I/91Kmra8YgnL._SX466_.jpg",
+        price: "50000",
+        type: "sport",
+        model: "2018",
+        rental: {
+          id: 2,
+          name: "Toyota official rental"
+        },
+        plate: "WHX-709",
+        rating: 4.5,
+        capacity: 5,
+        transmission: "Manual",
+        doors: 4,
+        color: "Red",
+        kms: 5870,
+        pictures: [
+          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png",
+          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png",
+          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png"
+        ]
+      }
     };
   },
+  created: function() {
+    this.SearchRenty();
+  },
   methods: {
-    clickForDetail(car) {
-      this.showDetail = !this.showDetail;
-      this.specificCar = car;
+    async clickForDetail(carId) {
+      const apiAnswer = await Axios({
+        method: "get",
+        url: `https://api.myjson.com/bins/1c826i`
+        // url: `https://renty-web.herokuapp.com/cars/${carId}`
+      });
+      console.log(apiAnswer);
+      this.specificCar = apiAnswer.data;
+      this.showDetail = true;
+    },
+    CaptureValues() {
+      this.url = `search?from=${this.from}&to=${this.to}&type=${this.type}`;
+      this.SearchRenty();
+      this.isSearch = true;
+    },
+    SearchRenty() {
+      Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
+        response => {
+          this.listCars = response.data;
+          console.log(this.listCars);
+        },
+        error => {
+          // console.log(error);
+        }
+      );
     }
   }
 };
