@@ -11,7 +11,7 @@
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
                         <select  id="typecar" class="form-control" v-model="type">
-                        <option class="select" v-for="listCars in listCars" :key=listCars.id >{{listCars.type}}</option>
+                        <option class="select" v-for="listCarT in listCarsT" :key=listCarT.id >{{listCarT}}</option>
                         
                        </select>
                 </div>
@@ -19,7 +19,6 @@
                          <label class="label" for="pickup-point">Pickup point</label>
                         <select id="pickup-point" class="form-control" v-model="pickup">
                         <option selected>Medellin</option>
-                        <option>...</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
@@ -86,37 +85,14 @@ export default {
       to: "",
       url: "",
       listCars: [],
+      listCarsT: [],
       isSearch: false,
       showDetail: false,
-      specificCar: {
-        id: "1",
-        brand: "Toyota",
-        thumbnail:
-          "https://images-na.ssl-images-amazon.com/images/I/91Kmra8YgnL._SX466_.jpg",
-        price: "50000",
-        type: "sport",
-        model: "2018",
-        rental: {
-          id: 2,
-          name: "Toyota official rental"
-        },
-        plate: "WHX-709",
-        rating: 4.5,
-        capacity: 5,
-        transmission: "Manual",
-        doors: 4,
-        color: "Red",
-        kms: 5870,
-        pictures: [
-          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png",
-          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png",
-          "https://vuejsdevelopers.com/images/posts/webcomponents_2.png"
-        ]
-      }
+      specificCar: {}
     };
   },
-  created: function() {
-    this.SearchRenty();
+  created : function() {
+    this.SearchTypes();
   },
   methods: {
     async clickForDetail(carId) {
@@ -134,14 +110,24 @@ export default {
       this.SearchRenty();
       this.isSearch = true;
     },
+    SearchTypes(){
+      Axios.get("https://renty-web.herokuapp.com/cars/").then(
+        response => {
+          let cars = response.data;
+          for(let i = 0; i<cars.length; i++){
+            if(!this.listCarsT.includes(cars[i].type)){
+              this.listCarsT.push(cars[i].type);              
+            }
+          }
+          console.log(this.listCarsT);
+          
+        }
+      );
+    },
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
           this.listCars = response.data;
-          console.log(this.listCars);
-        },
-        error => {
-          // console.log(error);
         }
       );
     }
@@ -151,9 +137,9 @@ export default {
 
 <style scoped>
 .container {
+  width: 900px;
   height: 400px;
   text-align: left;
-  margin-left: 8.5%;
   margin-top: -5px;
   font-family: "Raleway", sans-serif;
   background: #12223d;
@@ -187,7 +173,7 @@ export default {
   background-color: #2dc4bb;
   color: #fff;
   border-color: #2dc4bb;
-  margin-left: 87%;
+  margin-left: 70%;
   margin-top: 5px;
   margin-bottom: 5px;
   text-align: center;
@@ -219,19 +205,19 @@ export default {
   margin-right: 6%;
 }
 .card-availability {
-  width: 1100px;
+  width: 900px;
   height: 200px;
   background-color: #12223d;
   margin-left: 6%;
   margin-bottom: 15px;
 }
 .list-group {
-  width: 1400px;
+  width: 900px;
   height: 210px;
   border-radius: 10px;
   background-color: #e8e8e9;
   margin-top: 15px;
-  margin-left: 8.5%;
+  margin-left: 3.5%;
   position: relative;
 }
 .car-title {
@@ -239,30 +225,38 @@ export default {
   font-family: "Lato", sans-serif;
   font-size: 40px;
   text-align: left;
-  margin-left: 15%;
+  margin-left: 35%;
 }
 .card-text {
   font-family: "Raleway", sans-serif;
   font-size: 16px;
   text-align: left;
-  margin-left: 17%;
+  margin-left: 37%;
 }
 .btn-detalle {
   position: absolute;
-  margin-left: 900px;
+  margin-left: 70%;
   margin-bottom: 80%;
   margin-top: 80px;
 }
 .image {
   position: absolute;
-  margin-left: 600px;
-  margin-bottom: 80%;
-  margin-top: 20px;
+  margin-top: 10px;
+  width: 200px;
+  height: 200px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+.image img{
+  height: 200px;
+  width: 200px;
+
 }
 
 .list {
   margin-top: 5rem;
-  margin-left: -40px;
+  margin-left: 15%;
 }
 
 .label {
