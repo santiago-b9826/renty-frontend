@@ -30,6 +30,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  height: 600px;
 }
 .app img {
     margin-top: 5px;
