@@ -1,6 +1,6 @@
 <template>
-    <div class="card-footer text-muted" @click="alertaDeSaludo()">
-        <h4>Hecho por: {{author}}</h4>
+    <div >
+        Hecho por:
     </div>
 </template>
 

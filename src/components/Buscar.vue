@@ -1,15 +1,9 @@
 <template>
 <div>
-  
-<div >  
- 
-  <button href="/list" @click="Search" class="btn btn-primary"  >Buscar </button>  
+  <div>
+    <button href="/list" @click="Search" class="btn btn-primary">Buscar</button>  
+  </div>
 </div>
-
-</div>
-
-
-   
 </template>
 
 <script>
@@ -21,7 +15,6 @@ export default {
     Search(e) {
       e.preventDefault();
       this.SearchRenty();
-      
     }
   }
 };

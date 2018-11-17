@@ -1,9 +1,9 @@
-<template>
-    <div id="app">
+<template > 
+    <div id="app" class="app">
         <Header/>
-        <router-view></router-view>
-        <Footer id="footer" :author="author"/>
-       <!-- <img alt="Renty logo" src="./assets/Fondo.jpg">-->
+        <img alt="Vue logo" src="./assets/Renty-mid.png">
+            <router-view></router-view>
+        <Footer class="footer"/>
     </div>
 </template>
 
@@ -16,19 +16,34 @@ export default {
   components: {
     Header,
     Footer
-  },
-  data: function(){
-      return {
-          author: "Vue team"
-      }
   }
 };
 </script>
 
 <style>
-#app {
+
+.app {
   text-align: center;
   color: #2c3e50;
+  background-image: url("assets/Fondo.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 600px;
+}
+.app img {
+    margin-top: 5px;
+    margin-bottom: 2px;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
   width: 100%;
+  height: 70px; /* Height of the footer */
+  background-color: rgb(201, 209, 211);
+  margin-top: 90%;
 }
 </style>
