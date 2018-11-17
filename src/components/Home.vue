@@ -20,7 +20,6 @@
                          <label class="label" for="pickup-point">Pickup point</label>
                         <select id="pickup-point" class="form-control" v-model="pickup">
                         <option selected>Medellin</option>
-                        <option>...</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
