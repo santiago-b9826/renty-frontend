@@ -6,6 +6,9 @@ import Home from './../components/Home.vue'
 import Profile from '../components/Profile.vue'
 import auth from "../services/auth";
 
+
+
+
 Vue.use(Router);
 
 let router = new Router({
@@ -39,7 +42,8 @@ let router = new Router({
             meta: {
                 requireAuth: true
             }
-        }
+        },
+        
     ]
 });
 

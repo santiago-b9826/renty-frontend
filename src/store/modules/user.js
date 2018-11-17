@@ -1,4 +1,4 @@
-import Vue from 'vue'
+//import Vue from 'vue'
 import auth from "../../services/auth";
 
 const state = {
