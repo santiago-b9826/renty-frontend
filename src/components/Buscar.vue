@@ -3,7 +3,7 @@
   
 <div >  
  
-  <button href="/List" @click="Search" class="btn btn-primary"  >Buscar </button>  
+  <button href="/list" @click="Search" class="btn btn-primary"  >Buscar </button>  
 </div>
 
 </div>
@@ -13,8 +13,6 @@
 </template>
 
 <script>
-
-
 export default {
   name: "Buscar",
   components: {},

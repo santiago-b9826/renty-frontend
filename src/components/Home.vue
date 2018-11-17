@@ -1,32 +1,25 @@
 <template >
-
-   <div  class="container">     
- 
-    
+<div  class="container">
     <p class="h1">Renty</p>
      <p class="h2">Consigue tu auto al mejor precio. Reserva ya en Renty.com</p>  
         <div class="panel-defoutl">
           <Form></Form>
-          <Buscar ></Buscar>
+          <Buscar></Buscar>
         </div>
   </div>
 
 </template>
 
 <script>
- import Form from './Form.vue'
-import Buscar from './Buscar.vue'
-
+import Form from "./Form.vue";
+import Buscar from "./Buscar.vue";
 
 export default {
   name: "Home",
-  components:{
+  components: {
     Buscar,
-     Form
-  },
-
-  
-
+    Form
+  }
 };
 </script>
 
@@ -34,9 +27,9 @@ export default {
 .container {
   width: 60%;
   height: 380px;
-  text-align: left;  
-  font-family: "Raleway", sans-serif; 
-  background: #12223d; 
+  text-align: left;
+  font-family: "Raleway", sans-serif;
+  background: #12223d;
   border-radius: 10px;
   overflow: hidden;
   position: relative;

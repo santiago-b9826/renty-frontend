@@ -1,6 +1,6 @@
 <template>
-    <div class="card-footer text-muted">
-        Hecho por:
+    <div class="card-footer text-muted" @click="alertaDeSaludo()">
+        <h4>Hecho por: {{author}}</h4>
     </div>
 </template>
 
@@ -8,7 +8,7 @@
     export default {
         name: "Footer",
         props: {
-            msg: String
+            author: String
         }
     };
 </script>
