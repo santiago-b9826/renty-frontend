@@ -49,12 +49,24 @@
       <td><img :src="carFromList.thumbnail" width="100vw"/></td>
     </div>
     <div class="btn-detalle">
-        <button class="btn btn-primary" @click="clickForDetail(carFromList.id)">Detalle</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#details" @click="clickForDetail(carFromList.id)">Detalle</button>
     </div> 
   </div>
 </div>
-
-<Details :show="showDetail" :car="specificCar"/>
+<div id="details" class="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <Details :show="showDetail" :car="specificCar"/>
+        </div>
+      
+    </div>
+  </div>
+</div>
 </div>
 </template>
 
@@ -96,13 +108,14 @@ export default {
   },
   methods: {
     async clickForDetail(carId) {
-      const apiAnswer = await Axios({
+      console.log(carId);
+      
+      const apiAnswerPython = await Axios({
         method: "get",
-        url: `https://api.myjson.com/bins/1c826i`
-        // url: `https://renty-web.herokuapp.com/cars/${carId}`
-      });
-      console.log(apiAnswer);
-      this.specificCar = apiAnswer.data;
+        url: `https://renty-web.herokuapp.com/cars/${carId}`       
+        
+      });      
+      this.specificCar = apiAnswerPython.data[0];
       this.showDetail = true;
     },
     CaptureValues() {
