@@ -12,14 +12,14 @@
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
                         <select  id="typecar" class="form-control" v-model="type">
-                        <option class="select" selected>Choose...</option>
-                        <option>sport</option>
+                        <option class="select" v-for="listCarT in listCarsT" :key=listCarT.id >{{listCarT}}</option>
+                        
                        </select>
                 </div>
                     <div class="form-group col-md-6">
                          <label class="label" for="pickup-point">Pickup point</label>
                         <select id="pickup-point" class="form-control" v-model="pickup">
-                        <option selected>Choose...</option>
+                        <option selected>Medellin</option>
                         <option>...</option>
                        </select>
                     </div>
@@ -40,20 +40,20 @@
   </div>
   </div>
 </div>
-<div class="list">
-<div class="list-group" v-for="listCars in listCars" :key=listCars.id >  
+<div v-show='this.isSearch' class="list">
+  <div class="list-group" v-for="listCars in listCars" :key=listCars.id >  
        
     <h5 class="car-title">{{listCars.brand}}</h5>
     <p class="card-text">Tipo: {{listCars.type}}</p>
     <p class="card-text">Modelo: {{listCars.model}}</p>
     <p class="card-text">Precio: ${{listCars.price}}</p> 
-     <div class="image">
-        <td><img :src="listCars.thumbnail" /></td>
-   </div>      
+    <div class="image">
+      <td><img :src="listCars.thumbnail" /></td>
+    </div>      
     <div class="btn-detalle">
         <button  class="btn btn-primary"  >Detalle</button>  
-   </div> 
-</div>
+    </div> 
+  </div>
 </div>
 
 
@@ -64,12 +64,6 @@
 import Axios from "axios";
 export default {
   name: "List",
-  components: {
-  },
-  props: {},
-  mounted() {
-    //console.log(this.listCars);
-  },
   data() {
     return {
       type: "",
@@ -77,22 +71,38 @@ export default {
       from: "",
       to: "",
       url:"",
-      listCars: []
+      listCars: [],
+      listCarsT: [],
+      isSearch: false
     };
+  },
+  created : function() {
+    this.SearchTypes();
   },
   methods: {
     CaptureValues() {
       this.url = `search?from=${this.from}&to=${this.to}&type=${this.type}`;
       this.SearchRenty();
+      this.isSearch = true;
+    },
+    SearchTypes(){
+      Axios.get("https://renty-web.herokuapp.com/cars/").then(
+        response => {
+          let cars = response.data;
+          for(let i = 0; i<cars.length; i++){
+            if(!this.listCarsT.includes(cars[i].type)){
+              this.listCarsT.push(cars[i].type);              
+            }
+          }
+          console.log(this.listCarsT);
+          
+        }
+      );
     },
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
           this.listCars = response.data;
-          console.log(this.listCars);
-        },
-        error => {
-          // console.log(error);
         }
       );
     }
