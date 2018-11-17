@@ -12,22 +12,18 @@
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
                         <select  id="typecar" class="form-control">
-                        <option class="select" selected>Choose...</option>
-                        <option>...</option>
+                        <option class="select"  v-for="listCars in listCars" :key=listCars.id >{{listCars.type}}</option>
                        </select>
                 </div>
                     <div class="form-group col-md-6">
                          <label class="label" for="pickup-point">Pickup point</label>
                         <select id="pickup-point" class="form-control">
-                        <option selected>Choose...</option>
-                        <option>...</option>
+                        <option selected>Medellin</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
-                         <label class="label" for="date-start">Fecha inicio</label>
-                            
-                                <input id='date-start' type="date" class="form-control">
-                            
+                        <label class="label" for="date-start">Fecha inicio</label>                            
+                        <input id='date-start' type="date" class="form-control">                            
                     </div>
                     <div class="form-group col-md-6">
                         <label class="label" for="date-finish">Fecha fin</label>                            
@@ -36,24 +32,24 @@
             </div>
         </form>    
 
-    <div class="btn-buscar"> <Buscar :SearchRenty="SearchRenty"></Buscar>  </div>     
+    <button @click="capureValues" class="btn btn-primary"  >Buscar </button>     
   </div>
   </div>
 </div>
-<div class="list">
-<div class="list-group" v-for="listCars in listCars" :key=listCars.id >  
+<div v-show='this.isSearch' class="list">
+  <div class="list-group" v-for="listCars in listCars" :key=listCars.id >  
        
     <h5 class="car-title">{{listCars.brand}}</h5>
     <p class="card-text">Tipo: {{listCars.type}}</p>
     <p class="card-text">Modelo: {{listCars.model}}</p>
     <p class="card-text">Precio: ${{listCars.price}}</p> 
-     <div class="image">
-        <td><img :src="listCars.thumbnail" /></td>
-   </div>      
+    <div class="image">
+      <td><img :src="listCars.thumbnail" /></td>
+    </div>      
     <div class="btn-detalle">
         <button  class="btn btn-primary"  >Detalle</button>  
-   </div> 
-</div>
+    </div> 
+  </div>
 </div>
 
 
@@ -70,14 +66,21 @@ export default {
     Buscar,
     
   },
+  beforeCreate() {
+    this.SearchRenty()
+  },
   props: {},
   mounted() {
     //console.log(this.listCars);
   },
   data() {
     return {
-      listCars: []
+      listCars: [],
+      isSearch: false
     };
+  },
+  created : function() {
+    this.SearchRenty();
   },
   methods: {
     SearchRenty() {
@@ -85,11 +88,16 @@ export default {
         response => {
           this.listCars = response.data;
           console.log(this.listCars);
+          
+          
         },
         error => {
           // console.log(error);
         }
       );
+    },
+    capureValues(){
+      this.isSearch = true
     }
   }
 };
