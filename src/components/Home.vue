@@ -42,13 +42,14 @@
 </div>
 <div v-show='this.isSearch' class="list">
   <div class="list-group" v-for="listCars in listCars" :key=listCars.id >  
-       
-    <h5 class="car-title">{{listCars.brand}}</h5>
-    <p class="card-text">Tipo: {{listCars.type}}</p>
-    <p class="card-text">Modelo: {{listCars.model}}</p>
-    <p class="card-text">Precio: ${{listCars.price}}</p> 
+    <div> 
+      <h5 class="car-title">{{listCars.brand}}</h5>
+      <p class="card-text">Tipo: {{listCars.type}}</p>
+      <p class="card-text">Modelo: {{listCars.model}}</p>
+      <p class="card-text">Precio: ${{listCars.price}}</p> 
+    </div> 
     <div class="image">
-      <td><img :src="listCars.thumbnail" /></td>
+      <img :src="listCars.thumbnail" />
     </div>      
     <div class="btn-detalle">
         <button  class="btn btn-primary"  >Detalle</button>  
@@ -67,11 +68,21 @@ export default {
   components: {
   },
   beforeCreate() {
-    this.SearchRenty()
+    this.InitialSearch()
   },
   props: {},
   mounted() {
-    //console.log(this.listCars);
+    Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
+        response => {
+          this.listCars = response.data;
+          console.log(this.listCars);
+          
+          
+        },
+        error => {
+          // console.log(error);
+        }
+      );
   },
   data() {
     return {
@@ -81,20 +92,35 @@ export default {
       to: "",
       url:"",
       listCars: [],
-      isSearch: false
+      isSearch: false,
+      listTypes: [],
     };
   },
   created : function() {
-    this.SearchRenty();
+    this.InitialSearch();
   },
   methods: {
     CaptureValues() {
       this.url = `search?from=${this.from}&to=${this.to}&type=${this.type}`;
       this.SearchRenty();
       this.isSearch = true;
+      
     },
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
+        response => {
+          this.listCars = response.data;
+          console.log(this.listCars);
+          
+          
+        },
+        error => {
+          // console.log(error);
+        }
+      );
+    },
+    InitialSearch(){
+      Axios.get(`https://renty-web.herokuapp.com/cars`).then(
         response => {
           this.listCars = response.data;
           console.log(this.listCars);
@@ -112,10 +138,9 @@ export default {
 
 <style scoped>
 .container {
-  width: 1000px;
+  width: 900px;
   height: 400px;
   text-align: left;
-  margin-left: 8.5%;
   margin-top: -5px;
   font-family: "Raleway", sans-serif;
   background: #12223d;
@@ -149,7 +174,7 @@ export default {
   background-color: #2dc4bb;
   color: #fff;
   border-color: #2dc4bb;
-  margin-left: 87%;
+  margin-left: 70%;
   margin-top: 5px;
   margin-bottom: 5px;
   text-align: center;
@@ -181,19 +206,19 @@ export default {
   margin-right: 6%;
 }
 .card-availability {
-  width: 1100px;
+  width: 900px;
   height: 200px;
   background-color: #12223d;
   margin-left: 6%;
   margin-bottom: 15px;
 }
 .list-group {
-  width: 1400px;
+  width: 900px;
   height: 210px;
   border-radius: 10px;
   background-color: #e8e8e9;
   margin-top: 15px;
-  margin-left: 8.5%;
+  margin-left: 3.5%;
   position: relative;
 }
 .car-title {
@@ -201,30 +226,38 @@ export default {
   font-family: "Lato", sans-serif;
   font-size: 40px;
   text-align: left;
-  margin-left: 15%;
+  margin-left: 35%;
 }
 .card-text {
   font-family: "Raleway", sans-serif;
   font-size: 16px;
   text-align: left;
-  margin-left: 17%;
+  margin-left: 37%;
 }
 .btn-detalle {
   position: absolute;
-  margin-left: 900px;
+  margin-left: 70%;
   margin-bottom: 80%;
   margin-top: 80px;
 }
 .image {
   position: absolute;
-  margin-left: 600px;
-  margin-bottom: 80%;
-  margin-top: 20px;
+  margin-top: 10px;
+  width: 200px;
+  height: 200px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+.image img{
+  height: 200px;
+  width: 200px;
+
 }
 
 .list {
   margin-top: 5rem;
-  margin-left: -40px;
+  margin-left: 15%;
 }
 
 .label {
