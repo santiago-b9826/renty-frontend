@@ -1,5 +1,5 @@
 <template>
-    <div class="card-footer text-muted">
+    <div >
         Hecho por:
     </div>
 </template>
@@ -8,7 +8,7 @@
     export default {
         name: "Footer",
         props: {
-            msg: String
+            author: String
         }
     };
 </script>

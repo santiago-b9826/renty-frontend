@@ -1,6 +1,10 @@
 <template>
     <nav class="nav navbar ">
-        <a class="navbar-brand" href="#">RENTY</a>
+        <div class="navbar-brand">
+            <img alt="Renty logo" src="../assets/Renty-ico.png">
+            <a  href="/home">RENTY</a>
+        </div>
+        
         <form class="form-inline">
             <router-link v-if="!user" to="/login">Registrarse/Ingresar</router-link>
             <router-link v-if="user" to="/profile">{{user.displayName}}</router-link>
