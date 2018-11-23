@@ -24,7 +24,7 @@
                     <div class="form-group col-md-6">
                          <label class="label" for="date-start">Fecha inicio</label>
                             
-                                <input id='date-start' type="date" class="form-control" v-model="from">
+                        <input id='date-start' type="date" class="form-control" v-model="from">
                             
                     </div>
                     <div class="form-group col-md-6">
@@ -49,12 +49,24 @@
       <td><img :src="carFromList.thumbnail" width="100vw"/></td>
     </div>
     <div class="btn-detalle">
-        <button class="btn btn-primary" @click="clickForDetail(carFromList.id)">Detalle</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#details" @click="clickForDetail(carFromList.id, carFromList.rental.id)">Detalle</button>
     </div> 
   </div>
 </div>
-
-<Details :show="showDetail" :car="specificCar"/>
+<div id="details" class="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+          <Details :show="showDetail" :car="specificCar"/>
+        </div>
+      
+    </div>
+  </div>
+</div>
 </div>
 </template>
 
@@ -70,13 +82,6 @@ export default {
     Form,
     Details
   },
-  beforeCreate() {
-    this.SearchRenty();
-  },
-  props: {},
-  mounted() {
-    //console.log(this.listCars);
-  },
   data() {
     return {
       type: "",
@@ -91,18 +96,34 @@ export default {
       specificCar: {}
     };
   },
-  created : function() {
+  created: function() {
     this.SearchTypes();
+    
   },
   methods: {
-    async clickForDetail(carId) {
+    async clickForDetail(carId, rentalId) {
+      let url;
+      switch (rentalId) {
+        case 1: {
+          url = `https://renty-web.herokuapp.com/cars/${carId}`;
+          break;
+        }
+        case 123456789: {          
+          url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
+          break;
+        }
+        case 3: {
+          //url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
+        }
+      }
+      
       const apiAnswer = await Axios({
         method: "get",
-        url: `https://api.myjson.com/bins/1c826i`
-        // url: `https://renty-web.herokuapp.com/cars/${carId}`
+        url: url
       });
-      console.log(apiAnswer);
-      this.specificCar = apiAnswer.data;
+      this.specificCar = apiAnswer.data;   
+      console.log(this.specificCar, 'CAR CON ID');
+         
       this.showDetail = true;
     },
     CaptureValues() {
@@ -110,26 +131,66 @@ export default {
       this.SearchRenty();
       this.isSearch = true;
     },
-    SearchTypes(){
-      Axios.get("https://renty-web.herokuapp.com/cars/").then(
-        response => {
-          let cars = response.data;
-          for(let i = 0; i<cars.length; i++){
-            if(!this.listCarsT.includes(cars[i].type)){
-              this.listCarsT.push(cars[i].type);              
-            }
+    SearchTypes() {
+
+      Axios.get("https://renty-web.herokuapp.com/cars/").then(response => {
+        let cars = response.data;
+        
+        for (let i = 0; i < cars.length; i++) {
+          if (!this.listCarsT.includes(cars[i].type)) {
+            this.listCarsT.push(cars[i].type);
+            console.log(cars[i].type, 'python');
+            
           }
-          console.log(this.listCarsT);
-          
         }
-      );
+      });
+      console.log(this.listCarsT, 'LIST DESPUES DE python')
+      Axios.get("https://renty-ruby.herokuapp.com/cars/").then(response => {
+        let cars = response.data;
+        
+        for (let i = 0; i < cars.length; i++) {
+          if (!this.listCarsT.includes(cars[i].type)) {
+            this.listCarsT.push(cars[i].type);
+            console.log(cars[i].type, 'ruby');
+          }
+        }
+      });
+      console.log(this.listCarsT, 'LIST DESPUES DE ruby')
+      /*Axios.get("https://renty-scala.herokuapp.com/cars/").then(response => {
+        let cars = response.data;               
+        for (let i = 0; i < cars.length; i++) {
+          if (!this.listCarsT.includes(cars[i].type)) {
+            this.listCarsT.push(cars[i].type);
+          }
+        }
+      });*/
     },
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
-          this.listCars = response.data;
+          let cars = response.data;          
+          for (let i = 0; i < cars.length; i++){
+            this.listCars.push(cars[i]);        
+          }
         }
       );
+
+      Axios.get(`https://renty-ruby.herokuapp.com/cars/${this.url}`).then(
+        response => {
+          let cars = response.data;          
+          for (let i = 0; i < cars.length; i++) {
+            this.listCars.push(cars[i]);
+            }
+          console.log(this.listCars);
+          
+        }
+      );
+/*
+      Axios.get(`https://renty-scala.herokuapp.com/cars/${this.url}`).then(
+        response => {
+          this.listCars.push(response.data);
+        }
+      );*/
     }
   }
 };
@@ -248,10 +309,9 @@ export default {
   margin-right: 5px;
   margin-bottom: 10px;
 }
-.image img{
+.image img {
   height: 200px;
   width: 200px;
-
 }
 
 .list {
