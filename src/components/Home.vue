@@ -141,7 +141,6 @@ export default {
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
-            console.log(cars[i].type, 'python');
             
           }
         }
@@ -152,7 +151,6 @@ export default {
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
-            console.log(cars[i].type, 'ruby');
           }
         }
       });
@@ -166,28 +164,29 @@ export default {
       });
     },
     SearchRenty() {
+      this.listCars=[];
+      let counter =0;
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
         response => {
-          let cars = response.data;          
+          let cars = response.data;      
           for (let i = 0; i < cars.length; i++){
-            this.listCars.push(cars[i]);        
+            this.listCars.push(cars[i]);
+                  
           }
-          console.log(listCars, 'pyth');
           
         }
       );
-
+      
       Axios.get(`https://renty-ruby.herokuapp.com/cars/${this.url}`).then(
         response => {
-          let cars = response.data;          
+          let cars = response.data; 
+                   
           for (let i = 0; i < cars.length; i++) {
             this.listCars.push(cars[i]);
           }
-          console.log(this.listCars, 'ruby');
           
         }
       );
-
       Axios.get(`https://renty-scala.herokuapp.com/cars/${this.url}`).then(
         response => {
           this.listCars.push(response.data);
