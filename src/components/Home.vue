@@ -11,14 +11,17 @@
                 <div class="form-group col-md-6">
                    <label class="label" for="typecar">Tipo de vehiculo</label>
                         <select  id="typecar" class="form-control" v-model="type">
-                        <option class="select" v-for="listCarT in listCarsT" :key=listCarT.id >{{listCarT}}</option>
+                        <option>Economico</option>
+                        <option>Compacto</option>
+                        <option>SUV</option>
+                        <option>Lujo</option>
                         
                        </select>
                 </div>
                     <div class="form-group col-md-6">
                          <label class="label" for="pickup-point">Pickup point</label>
                         <select id="pickup-point" class="form-control" v-model="pickup">
-                        <option selected>Medellin</option>
+                        <option selected>aeropuesto</option>
                        </select>
                     </div>
                     <div class="form-group col-md-6">
@@ -95,7 +98,7 @@ export default {
     };
   },
   created: function() {
-    this.SearchTypes();
+    //this.SearchTypes();
     
   },
   methods: {
@@ -111,7 +114,7 @@ export default {
           break;
         }
         case 3: {
-          //url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
+          url = `https://renty-ruby.herokuapp.com/cars/${carId}`;
         }
       }
       
@@ -119,8 +122,7 @@ export default {
         method: "get",
         url: url
       });
-      this.specificCar = apiAnswer.data;   
-      console.log(this.specificCar, 'CAR CON ID');
+      this.specificCar = apiAnswer.data;
          
       this.showDetail = true;
     },
@@ -134,6 +136,8 @@ export default {
       Axios.get("https://renty-web.herokuapp.com/cars/").then(response => {
         let cars = response.data;
         
+        
+        
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
@@ -142,7 +146,6 @@ export default {
           }
         }
       });
-      console.log(this.listCarsT, 'LIST DESPUES DE python')
       Axios.get("https://renty-ruby.herokuapp.com/cars/").then(response => {
         let cars = response.data;
         
@@ -153,15 +156,14 @@ export default {
           }
         }
       });
-      console.log(this.listCarsT, 'LIST DESPUES DE ruby')
-      /*Axios.get("https://renty-scala.herokuapp.com/cars/").then(response => {
+      Axios.get("https://renty-scala.herokuapp.com/cars/").then(response => {
         let cars = response.data;               
         for (let i = 0; i < cars.length; i++) {
           if (!this.listCarsT.includes(cars[i].type)) {
             this.listCarsT.push(cars[i].type);
           }
         }
-      });*/
+      });
     },
     SearchRenty() {
       Axios.get(`https://renty-web.herokuapp.com/cars/${this.url}`).then(
@@ -170,6 +172,8 @@ export default {
           for (let i = 0; i < cars.length; i++){
             this.listCars.push(cars[i]);        
           }
+          console.log(listCars, 'pyth');
+          
         }
       );
 
@@ -178,17 +182,17 @@ export default {
           let cars = response.data;          
           for (let i = 0; i < cars.length; i++) {
             this.listCars.push(cars[i]);
-            }
-          console.log(this.listCars);
+          }
+          console.log(this.listCars, 'ruby');
           
         }
       );
-/*
+
       Axios.get(`https://renty-scala.herokuapp.com/cars/${this.url}`).then(
         response => {
           this.listCars.push(response.data);
         }
-      );*/
+      );
     }
   }
 };
